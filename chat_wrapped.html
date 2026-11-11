@@ -1,0 +1,1601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lemmings &amp; Gooners Reborn - 2026 Keynote Presentation</title>
+<style>
+    :root {
+        --bg-main: #0c0d14;
+        --bg-card: rgba(26, 29, 46, 0.75);
+        --bg-card-hover: rgba(35, 39, 60, 0.9);
+        --text-bright: #ffffff;
+        --text-sub: #a1adcb;
+        --accent-purple: #8b5cf6;
+        --accent-pink: #ec4899;
+        --accent-cyan: #06b6d4;
+        --accent-gold: #f59e0b;
+        --accent-green: #10b981;
+        --border-glass: rgba(255, 255, 255, 0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+        background: var(--bg-main);
+        color: var(--text-bright);
+        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        overflow: hidden;
+        height: 100vh;
+        width: 100vw;
+        user-select: none;
+    }
+
+    /* Presentation Deck */
+    .deck {
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+    }
+    .slide {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        pointer-events: none;
+        transform: scale(0.98) translateY(15px);
+        transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1), transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        padding: 3rem 4rem 5rem;
+    }
+    .slide.active {
+        opacity: 1;
+        pointer-events: auto;
+        transform: scale(1) translateY(0);
+    }
+
+    .slide-content {
+        max-width: 1150px;
+        width: 100%;
+        max-height: 85vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    /* Headers */
+    .kicker {
+        font-size: 0.85rem;
+        font-weight: 800;
+        letter-spacing: 2px;
+        color: var(--accent-cyan);
+        text-transform: uppercase;
+        margin-bottom: 0.3rem;
+    }
+    h1.main-title {
+        font-size: 4rem;
+        font-weight: 900;
+        line-height: 1.1;
+        background: linear-gradient(135deg, #c084fc 0%, #f472b6 50%, #38bdf8 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 1rem;
+    }
+    h2 {
+        font-size: 2.3rem;
+        font-weight: 800;
+        margin-bottom: 0.2rem;
+    }
+    .slide-desc {
+        color: var(--text-sub);
+        font-size: 1.05rem;
+        margin-bottom: 1.5rem;
+    }
+    .subtitle {
+        font-size: 1.5rem;
+        color: var(--text-sub);
+        margin-bottom: 2rem;
+    }
+
+    /* Card styling */
+    .card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-glass);
+        border-radius: 16px;
+        padding: 1.25rem 1.5rem;
+        backdrop-filter: blur(16px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+    .highlight { border-color: rgba(6, 182, 212, 0.35); }
+    .accent { border-color: rgba(245, 158, 11, 0.35); }
+
+    /* Grids */
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.2rem; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; }
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2rem; margin-bottom: 1.5rem; }
+
+    .stat-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-glass);
+        border-radius: 16px;
+        padding: 1.8rem 1.4rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    .stat-card .number {
+        font-size: 2.8rem;
+        font-weight: 900;
+        color: var(--accent-cyan);
+        line-height: 1;
+        margin-bottom: 0.5rem;
+    }
+    .stat-card .label {
+        font-size: 0.9rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #fff;
+    }
+    .stat-card .detail {
+        font-size: 0.85rem;
+        color: var(--text-sub);
+        margin-top: 0.4rem;
+    }
+
+    /* Leaderboards */
+    .leaderboard-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.45rem;
+        max-height: 52vh;
+        overflow-y: auto;
+        padding-right: 0.5rem;
+    }
+    .leaderboard-row {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        background: var(--bg-card);
+        border: 1px solid var(--border-glass);
+        padding: 0.55rem 1rem;
+        border-radius: 10px;
+    }
+    .rank-badge {
+        font-size: 0.85rem;
+        font-weight: 800;
+        padding: 0.2rem 0.5rem;
+        border-radius: 6px;
+        min-width: 38px;
+        text-align: center;
+    }
+    .rank-1 { background: rgba(245, 158, 11, 0.25); color: #f59e0b; }
+    .rank-2 { background: rgba(148, 163, 184, 0.25); color: #cbd5e1; }
+    .rank-3 { background: rgba(180, 83, 9, 0.25); color: #d97706; }
+    .rank-norm { background: rgba(255, 255, 255, 0.08); color: var(--text-sub); }
+    .user-name { width: 180px; font-size: 1rem; }
+    .progress-wrap { flex: 1; height: 10px; background: rgba(255, 255, 255, 0.06); border-radius: 6px; overflow: hidden; }
+    .progress-bar { height: 100%; background: linear-gradient(90deg, #8b5cf6, #ec4899); border-radius: 6px; }
+    .rx-bar { background: linear-gradient(90deg, #ec4899, #f59e0b); }
+    .stat-val { width: 140px; text-align: right; font-weight: 700; font-size: 0.95rem; }
+
+    /* Speed Demons */
+    .speed-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.7rem; max-height: 55vh; overflow-y: auto; }
+    .speed-row {
+        background: var(--bg-card);
+        border: 1px solid var(--border-glass);
+        padding: 0.7rem 1.2rem;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+    }
+    .speed-rank { font-weight: 800; color: var(--accent-gold); width: 28px; }
+    .speed-user { flex: 1; font-weight: 700; }
+    .speed-time { font-size: 1.15rem; font-weight: 800; color: var(--accent-cyan); }
+    .speed-tier { font-size: 0.85rem; color: var(--text-sub); padding: 0.15rem 0.5rem; background: rgba(255, 255, 255, 0.06); border-radius: 6px; }
+
+    /* Speaker Notes Box */
+    .speaker-card {
+        margin-top: 1.3rem;
+        background: rgba(139, 92, 246, 0.12);
+        border: 1px dashed rgba(139, 92, 246, 0.4);
+        padding: 0.8rem 1.2rem;
+        border-radius: 10px;
+        font-size: 0.95rem;
+        color: #d8b4fe;
+    }
+
+    /* Quotes & Dialogues */
+    .chat-dialogue {
+        display: flex;
+        flex-direction: column;
+        gap: 0.9rem;
+        margin: 1rem 0;
+    }
+    .chat-row { display: flex; align-items: center; gap: 1rem; }
+    .chat-row.right { flex-direction: row-reverse; }
+    .avatar {
+        font-size: 0.85rem;
+        font-weight: 800;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 0.35rem 0.75rem;
+        border-radius: 20px;
+        min-width: 80px;
+        text-align: center;
+    }
+    .bubble {
+        background: var(--bg-card);
+        border: 1px solid var(--border-glass);
+        padding: 0.9rem 1.3rem;
+        border-radius: 18px;
+        font-size: 1.1rem;
+        position: relative;
+        max-width: 75%;
+    }
+    .bubble.wide { font-size: 0.98rem; }
+    .chat-row.right .bubble { background: rgba(139, 92, 246, 0.25); border-color: rgba(139, 92, 246, 0.4); }
+    .rx-tag {
+        display: inline-block;
+        background: rgba(236, 72, 153, 0.25);
+        color: #f472b6;
+        font-weight: 800;
+        font-size: 0.75rem;
+        padding: 0.15rem 0.45rem;
+        border-radius: 6px;
+        margin-right: 0.4rem;
+    }
+
+    /* Crickets */
+    .cricket-container { display: flex; flex-direction: column; gap: 1rem; }
+    .cricket-card { border-left: 4px solid var(--accent-pink); }
+    .cricket-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+    .cricket-quote { font-size: 1.05rem; font-style: italic; color: #f1f5f9; margin-bottom: 0.4rem; }
+    .cricket-date { font-size: 0.8rem; color: var(--text-sub); }
+    .rx-zero { background: rgba(239, 68, 68, 0.2); color: #fca5a5; }
+
+    /* Awards */
+    .award-slide-card {
+        border: 1px solid rgba(245, 158, 11, 0.3);
+        background: linear-gradient(180deg, rgba(245, 158, 11, 0.08) 0%, rgba(26, 29, 46, 0.8) 100%);
+    }
+    .award-trophy { font-size: 0.85rem; font-weight: 800; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 1px; }
+    .award-recipient { font-size: 1.35rem; font-weight: 800; margin: 0.3rem 0; color: #fff; }
+    .award-desc { font-size: 0.88rem; color: var(--text-sub); }
+
+    /* Tags & Navigation */
+    .meta-tag-strip { display: flex; gap: 0.8rem; margin-bottom: 2.5rem; }
+    .tag { background: rgba(255, 255, 255, 0.08); padding: 0.4rem 0.9rem; border-radius: 20px; font-size: 0.95rem; font-weight: 600; }
+    .nav-hint { font-size: 0.95rem; color: var(--text-sub); }
+    kbd { background: rgba(255, 255, 255, 0.15); padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: 700; color: #fff; }
+
+    /* Controls overlay */
+    .deck-controls {
+        position: fixed;
+        bottom: 1.5rem;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        background: rgba(15, 17, 26, 0.8);
+        border: 1px solid var(--border-glass);
+        padding: 0.5rem 1rem;
+        border-radius: 30px;
+        backdrop-filter: blur(12px);
+        z-index: 100;
+    }
+    .ctrl-btn {
+        background: none;
+        border: none;
+        color: #fff;
+        font-size: 1.2rem;
+        cursor: pointer;
+        padding: 0.2rem 0.6rem;
+        border-radius: 6px;
+        transition: background 0.2s;
+    }
+    .ctrl-btn:hover { background: rgba(255, 255, 255, 0.1); }
+    .slide-counter { font-size: 0.85rem; font-weight: 700; color: var(--text-sub); min-width: 80px; text-align: center; }
+    .progress-line {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #8b5cf6, #ec4899, #06b6d4);
+        transition: width 0.3s ease;
+        z-index: 101;
+    }
+    .restart-btn {
+        background: linear-gradient(135deg, #8b5cf6, #ec4899);
+        border: none;
+        color: #fff;
+        padding: 0.8rem 1.8rem;
+        font-size: 1.1rem;
+        font-weight: 700;
+        border-radius: 30px;
+        cursor: pointer;
+        margin-top: 1.5rem;
+    }
+</style>
+</head>
+<body>
+
+<div class="progress-line" id="progressBar"></div>
+
+<div class="deck" id="deckContainer">
+<section class="slide active" data-slide="0">
+    <div class="slide-content title-slide">
+        <div class="kicker">ANNUAL CHAT RETROSPECTIVE • 2026</div>
+        <h1 class="main-title">Lemmings &amp; Gooners Reborn</h1>
+        <p class="subtitle">The Official Group Chat Keynote &amp; Dossier</p>
+        <div class="meta-tag-strip">
+            <span class="tag">18,061 Messages</span>
+            <span class="tag">7,937 Reactions</span>
+            <span class="tag">290 Days of Chaos</span>
+            <span class="tag">Zero Filter</span>
+        </div>
+        <div class="nav-hint">Press <kbd>→</kbd> or <kbd>Space</kbd> to begin presentation</div>
+    </div>
+    </section>
+<section class="slide" data-slide="1">
+    <div class="slide-content">
+        <div class="slide-header">
+            <div class="kicker">SECTION 01</div>
+            <h2>The Dossier: Vital Signs</h2>
+            <p class="slide-desc">High-level statistics spanning January 19 to November 6, 2026.</p>
+        </div>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <span class="number">18,061</span>
+                <span class="label">Total Messages</span>
+                <span class="detail">62.3 messages per day</span>
+            </div>
+            <div class="stat-card highlight">
+                <span class="number">7,937</span>
+                <span class="label">Reactions Given</span>
+                <span class="detail">0.44 reactions per message average</span>
+            </div>
+            <div class="stat-card accent">
+                <span class="number">687</span>
+                <span class="label">Record-Breaking Day</span>
+                <span class="detail">2026-10-15 (Thursday)</span>
+            </div>
+            <div class="stat-card">
+                <span class="number">13:00</span>
+                <span class="label">Peak Unhinged Hour</span>
+                <span class="detail">1,836 messages sent at lunch (1-2 PM)</span>
+            </div>
+        </div>
+        <div class="speaker-card">
+            🗣️ <strong>Speaker Note:</strong> "We sent over 18,000 messages in 10 months. Our absolute peak was Thursday, October 15th with 687 messages in 24 hours."
+        </div>
+    </div>
+    </section>
+<section class="slide" data-slide="2">
+    <div class="slide-content">
+        <div class="slide-header">
+            <div class="kicker">SECTION 02</div>
+            <h2>Volume Leaderboard: The Chatterboxes</h2>
+            <p class="slide-desc">Ranking by total raw messages sent in chat history.</p>
+        </div>
+        <div class="leaderboard-list">
+            
+        <div class="leaderboard-row">
+            <span class="rank-badge rank-1">#1</span>
+            <span class="user-name"><strong>Hannah Irvine</strong></span>
+            <div class="progress-wrap">
+                <div class="progress-bar" style="width: 100%;"></div>
+            </div>
+            <span class="stat-val">3,913 msgs <small>(21.7%)</small></span>
+        </div>
+        
+        <div class="leaderboard-row">
+            <span class="rank-badge rank-2">#2</span>
+            <span class="user-name"><strong>Darren Kelly</strong></span>
+            <div class="progress-wrap">
+                <div class="progress-bar" style="width: 55%;"></div>
+            </div>
+            <span class="stat-val">2,180 msgs <small>(12.1%)</small></span>
+        </div>
+        
+        <div class="leaderboard-row">
+            <span class="rank-badge rank-3">#3</span>
+            <span class="user-name"><strong>Sophia</strong></span>
+            <div class="progress-wrap">
+                <div class="progress-bar" style="width: 54%;"></div>
+            </div>
+            <span class="stat-val">2,151 msgs <small>(11.9%)</small></span>
+        </div>
+        
+        <div class="leaderboard-row">
+            <span class="rank-badge rank-norm">#4</span>
+            <span class="user-name"><strong>Seán MacDiarmada</strong></span>
+            <div class="progress-wrap">
+                <div class="progress-bar" style="width: 45%;"></div>
+            </div>
+            <span class="stat-val">1,794 msgs <small>(9.9%)</small></span>
+        </div>
+        
+        <div class="leaderboard-row">
+            <span class="rank-badge rank-norm">#5</span>
+            <span class="user-name"><strong>Darius Rezania</strong></span>
+            <div class="progress-wrap">
+                <div class="progress-bar" style="width: 40%;"></div>
+            </div>
+            <span class="stat-val">1,582 msgs <small>(8.8%)</small></span>
+        </div>
+        
+        <div class="leaderboard-row">
+            <span class="rank-badge rank-norm">#6</span>
+            <span class="user-name"><strong>Ben Richardson</strong></span>
+            <div class="progress-wrap">
+                <div class="progress-bar" style="width: 37%;"></div>
+            </div>
+            <span class="stat-val">1,464 msgs <small>(8.1%)</small></span>
+        </div>
+        
+        <div class="leaderboard-row">
+            <span class="rank-badge rank-norm">#7</span>
+            <span class="user-name"><strong>Clodagh🌻</strong></span>
+            <div class="progress-wrap">
+                <div class="progress-bar" style="width: 29%;"></div>
+            </div>
+            <span class="stat-val">1,160 msgs <small>(6.4%)</small></span>
+        </div>
+        
+        <div class="leaderboard-row">
+            <span class="rank-badge rank-norm">#8</span>
+            <span class="user-name"><strong>Abyan</strong></span>
+            <div class="progress-wrap">
+                <div class="progress-bar" style="width: 26%;"></div>
+            </div>
+            <span class="stat-val">1,031 msgs <small>(5.7%)</small></span>
+        </div>
+        
+        <div class="leaderboard-row">
+            <span class="rank-badge rank-norm">#9</span>
+            <span class="user-name"><strong>Joe</strong></span>
+            <div class="progress-wrap">
+                <div class="progress-bar" style="width: 26%;"></div>
+            </div>
+            <span class="stat-val">1,024 msgs <small>(5.7%)</small></span>
+        </div>
+        
+        <div class="leaderboard-row">
+            <span class="rank-badge rank-norm">#10</span>
+            <span class="user-name"><strong>ᴅᴀɴɪᴇʟ ᴄᴀɪʀɴᴇʏ</strong></span>
+            <div class="progress-wrap">
+                <div class="progress-bar" style="width: 21%;"></div>
+            </div>
+            <span class="stat-val">853 msgs <small>(4.7%)</small></span>
+        </div>
+        
+        <div class="leaderboard-row">
+            <span class="rank-badge rank-norm">#11</span>
+            <span class="user-name"><strong>Seán Corry</strong></span>
+            <div class="progress-wrap">
+                <div class="progress-bar" style="width: 17%;"></div>
+            </div>
+            <span class="stat-val">684 msgs <small>(3.8%)</small></span>
+        </div>
+        
+        <div class="leaderboard-row">
+            <span class="rank-badge rank-norm">#12</span>
+            <span class="user-name"><strong>Pauric Mc Bride</strong></span>
+            <div class="progress-wrap">
+                <div class="progress-bar" style="width: 3%;"></div>
+            </div>
+            <span class="stat-val">134 msgs <small>(0.7%)</small></span>
+        </div>
+        
+        <div class="leaderboard-row">
+            <span class="rank-badge rank-norm">#13</span>
+            <span class="user-name"><strong>Aaron Flynn</strong></span>
+            <div class="progress-wrap">
+                <div class="progress-bar" style="width: 2%;"></div>
+            </div>
+            <span class="stat-val">91 msgs <small>(0.5%)</small></span>
+        </div>
+        
+        </div>
+        <div class="speaker-card">
+            🗣️ <strong>Speaker Note:</strong> "Hannah sent almost 4,000 messages—literally 22% of everything said in this chat came from one person. Darren and Sophia tied for 2nd with over 2,100 each."
+        </div>
+    </div>
+    </section>
+<section class="slide" data-slide="3">
+    <div class="slide-content">
+        <div class="slide-header">
+            <div class="kicker">SECTION 03</div>
+            <h2>The Clout Index: Reactions Received</h2>
+            <p class="slide-desc">Who got the most love and validation from the squad?</p>
+        </div>
+        <div class="leaderboard-list">
+            
+        <div class="leaderboard-row">
+            <span class="rank-badge rank-1">#1</span>
+            <span class="user-name"><strong>Hannah Irvine</strong></span>
+            <div class="progress-wrap">
+                <div class="progress-bar rx-bar" style="width: 100%;"></div>
+            </div>
+            <span class="stat-val">1,560 reactions</span>
+        </div>
+        
+        <div class="leaderboard-row">
+            <span class="rank-badge rank-2">#2</span>
+            <span class="user-name"><strong>Seán MacDiarmada</strong></span>
+            <div class="progress-wrap">
+                <div class="progress-bar rx-bar" style="width: 72%;"></div>
+            </div>
+            <span class="stat-val">1,138 reactions</span>
+        </div>
+        
+        <div class="leaderboard-row">
+            <span class="rank-badge rank-3">#3</span>
+            <span class="user-name"><strong>Darren Kelly</strong></span>
+            <div class="progress-wrap">
+                <div class="progress-bar rx-bar" style="width: 64%;"></div>
+            </div>
+            <span class="stat-val">999 reactions</span>
+        </div>
+        
+        <div class="leaderboard-row">
+            <span class="rank-badge rank-norm">#4</span>
+            <span class="user-name"><strong>Clodagh🌻</strong></span>
+            <div class="progress-wrap">
+                <div class="progress-bar rx-bar" style="width: 42%;"></div>
+            </div>
+            <span class="stat-val">656 reactions</span>
+        </div>
+        
+        <div class="leaderboard-row">
+            <span class="rank-badge rank-norm">#5</span>
+            <span class="user-name"><strong>Abyan</strong></span>
+            <div class="progress-wrap">
+                <div class="progress-bar rx-bar" style="width: 40%;"></div>
+            </div>
+            <span class="stat-val">629 reactions</span>
+        </div>
+        
+        <div class="leaderboard-row">
+            <span class="rank-badge rank-norm">#6</span>
+            <span class="user-name"><strong>Joe</strong></span>
+            <div class="progress-wrap">
+                <div class="progress-bar rx-bar" style="width: 39%;"></div>
+            </div>
+            <span class="stat-val">617 reactions</span>
+        </div>
+        
+        <div class="leaderboard-row">
+            <span class="rank-badge rank-norm">#7</span>
+            <span class="user-name"><strong>Ben Richardson</strong></span>
+            <div class="progress-wrap">
+                <div class="progress-bar rx-bar" style="width: 34%;"></div>
+            </div>
+            <span class="stat-val">540 reactions</span>
+        </div>
+        
+        <div class="leaderboard-row">
+            <span class="rank-badge rank-norm">#8</span>
+            <span class="user-name"><strong>Sophia</strong></span>
+            <div class="progress-wrap">
+                <div class="progress-bar rx-bar" style="width: 31%;"></div>
+            </div>
+            <span class="stat-val">499 reactions</span>
+        </div>
+        
+        <div class="leaderboard-row">
+            <span class="rank-badge rank-norm">#9</span>
+            <span class="user-name"><strong>Darius Rezania</strong></span>
+            <div class="progress-wrap">
+                <div class="progress-bar rx-bar" style="width: 28%;"></div>
+            </div>
+            <span class="stat-val">448 reactions</span>
+        </div>
+        
+        <div class="leaderboard-row">
+            <span class="rank-badge rank-norm">#10</span>
+            <span class="user-name"><strong>Seán Corry</strong></span>
+            <div class="progress-wrap">
+                <div class="progress-bar rx-bar" style="width: 28%;"></div>
+            </div>
+            <span class="stat-val">442 reactions</span>
+        </div>
+        
+        <div class="leaderboard-row">
+            <span class="rank-badge rank-norm">#11</span>
+            <span class="user-name"><strong>ᴅᴀɴɪᴇʟ ᴄᴀɪʀɴᴇʏ</strong></span>
+            <div class="progress-wrap">
+                <div class="progress-bar rx-bar" style="width: 17%;"></div>
+            </div>
+            <span class="stat-val">277 reactions</span>
+        </div>
+        
+        <div class="leaderboard-row">
+            <span class="rank-badge rank-norm">#12</span>
+            <span class="user-name"><strong>Pauric Mc Bride</strong></span>
+            <div class="progress-wrap">
+                <div class="progress-bar rx-bar" style="width: 4%;"></div>
+            </div>
+            <span class="stat-val">69 reactions</span>
+        </div>
+        
+        <div class="leaderboard-row">
+            <span class="rank-badge rank-norm">#13</span>
+            <span class="user-name"><strong>Aaron Flynn</strong></span>
+            <div class="progress-wrap">
+                <div class="progress-bar rx-bar" style="width: 4%;"></div>
+            </div>
+            <span class="stat-val">63 reactions</span>
+        </div>
+        
+        </div>
+        <div class="speaker-card">
+            🗣️ <strong>Speaker Note:</strong> "Hannah takes #1 with 1,560 reactions, but Seán M pulled 1,138 reactions on half the messages sent. Darren finished with 999—literally 1 reaction away from a thousand."
+        </div>
+    </div>
+    </section>
+<section class="slide" data-slide="4">
+    <div class="slide-content">
+        <div class="slide-header">
+            <div class="kicker">SECTION 04</div>
+            <h2>Comedic Efficiency: Hit Rate &amp; Bangers</h2>
+            <p class="slide-desc">Percentage of messages that earned at least 1 reaction (Quality over Quantity).</p>
+        </div>
+        <div class="grid-3">
+            
+        <div class="card metric-box">
+            <div class="metric-top">
+                <span class="rank-pill">#1</span>
+                <span class="metric-val">42.9%</span>
+            </div>
+            <div class="metric-user">Aaron Flynn</div>
+            <div class="metric-sub">2 Certified Bangers (4+ rx) • 91 sent</div>
+        </div>
+        
+        <div class="card metric-box">
+            <div class="metric-top">
+                <span class="rank-pill">#2</span>
+                <span class="metric-val">36.0%</span>
+            </div>
+            <div class="metric-user">Seán Corry</div>
+            <div class="metric-sub">20 Certified Bangers (4+ rx) • 684 sent</div>
+        </div>
+        
+        <div class="card metric-box">
+            <div class="metric-top">
+                <span class="rank-pill">#3</span>
+                <span class="metric-val">35.9%</span>
+            </div>
+            <div class="metric-user">Abyan</div>
+            <div class="metric-sub">20 Certified Bangers (4+ rx) • 1,031 sent</div>
+        </div>
+        
+        <div class="card metric-box">
+            <div class="metric-top">
+                <span class="rank-pill">#4</span>
+                <span class="metric-val">34.1%</span>
+            </div>
+            <div class="metric-user">Seán MacDiarmada</div>
+            <div class="metric-sub">59 Certified Bangers (4+ rx) • 1,794 sent</div>
+        </div>
+        
+        <div class="card metric-box">
+            <div class="metric-top">
+                <span class="rank-pill">#5</span>
+                <span class="metric-val">34.1%</span>
+            </div>
+            <div class="metric-user">Clodagh🌻</div>
+            <div class="metric-sub">21 Certified Bangers (4+ rx) • 1,160 sent</div>
+        </div>
+        
+        <div class="card metric-box">
+            <div class="metric-top">
+                <span class="rank-pill">#6</span>
+                <span class="metric-val">34.0%</span>
+            </div>
+            <div class="metric-user">Joe</div>
+            <div class="metric-sub">33 Certified Bangers (4+ rx) • 1,024 sent</div>
+        </div>
+        
+        </div>
+        <div class="speaker-card">
+            🗣️ <strong>Speaker Note:</strong> "Aaron Flynn doesn't speak often, but when he does, 43% of his messages get reacted to. Pure sniper efficiency. Seán Corry and Abyan follow close behind with 36%."
+        </div>
+    </div>
+    </section>
+<section class="slide" data-slide="5">
+    <div class="slide-content">
+        <div class="slide-header">
+            <div class="kicker">SECTION 05</div>
+            <h2>Speed Demons: Fastest Draw in the West</h2>
+            <p class="slide-desc">Median active response latency when another person finishes speaking.</p>
+        </div>
+        <div class="speed-grid">
+            
+        <div class="speed-row">
+            <span class="speed-rank">#1</span>
+            <span class="speed-user">Abyan</span>
+            <span class="speed-time">14.4s</span>
+            <span class="speed-tier">⚡ Supersonic</span>
+        </div>
+        
+        <div class="speed-row">
+            <span class="speed-rank">#2</span>
+            <span class="speed-user">Sophia</span>
+            <span class="speed-time">16.1s</span>
+            <span class="speed-tier">⚡ Supersonic</span>
+        </div>
+        
+        <div class="speed-row">
+            <span class="speed-rank">#3</span>
+            <span class="speed-user">Seán Corry</span>
+            <span class="speed-time">17.0s</span>
+            <span class="speed-tier">🏃 Rapid</span>
+        </div>
+        
+        <div class="speed-row">
+            <span class="speed-rank">#4</span>
+            <span class="speed-user">Joe</span>
+            <span class="speed-time">17.8s</span>
+            <span class="speed-tier">🏃 Rapid</span>
+        </div>
+        
+        <div class="speed-row">
+            <span class="speed-rank">#5</span>
+            <span class="speed-user">Clodagh🌻</span>
+            <span class="speed-time">19.2s</span>
+            <span class="speed-tier">🏃 Rapid</span>
+        </div>
+        
+        <div class="speed-row">
+            <span class="speed-rank">#6</span>
+            <span class="speed-user">Darius Rezania</span>
+            <span class="speed-time">19.3s</span>
+            <span class="speed-tier">🏃 Rapid</span>
+        </div>
+        
+        <div class="speed-row">
+            <span class="speed-rank">#7</span>
+            <span class="speed-user">Pauric Mc Bride</span>
+            <span class="speed-time">20.0s</span>
+            <span class="speed-tier">🏃 Rapid</span>
+        </div>
+        
+        <div class="speed-row">
+            <span class="speed-rank">#8</span>
+            <span class="speed-user">Ben Richardson</span>
+            <span class="speed-time">20.6s</span>
+            <span class="speed-tier">🏃 Rapid</span>
+        </div>
+        
+        <div class="speed-row">
+            <span class="speed-rank">#9</span>
+            <span class="speed-user">Darren Kelly</span>
+            <span class="speed-time">22.1s</span>
+            <span class="speed-tier">🚶 Steady</span>
+        </div>
+        
+        <div class="speed-row">
+            <span class="speed-rank">#10</span>
+            <span class="speed-user">Hannah Irvine</span>
+            <span class="speed-time">22.4s</span>
+            <span class="speed-tier">🚶 Steady</span>
+        </div>
+        
+        <div class="speed-row">
+            <span class="speed-rank">#11</span>
+            <span class="speed-user">Seán MacDiarmada</span>
+            <span class="speed-time">22.5s</span>
+            <span class="speed-tier">🚶 Steady</span>
+        </div>
+        
+        <div class="speed-row">
+            <span class="speed-rank">#12</span>
+            <span class="speed-user">ᴅᴀɴɪᴇʟ ᴄᴀɪʀɴᴇʏ</span>
+            <span class="speed-time">39.9s</span>
+            <span class="speed-tier">🦥 Patient</span>
+        </div>
+        
+        <div class="speed-row">
+            <span class="speed-rank">#13</span>
+            <span class="speed-user">Aaron Flynn</span>
+            <span class="speed-time">1.3m</span>
+            <span class="speed-tier">🦥 Patient</span>
+        </div>
+        
+        </div>
+        <div class="speaker-card">
+            🗣️ <strong>Speaker Note:</strong> "Abyan has lightning fingers with a 14.4 second median reply time. Sophia is right on his heels at 16.1s. Meanwhile, Aaron Flynn takes 80 seconds—he ponders his thoughts."
+        </div>
+    </div>
+    </section>
+<section class="slide" data-slide="6">
+    <div class="slide-content">
+        <div class="slide-header">
+            <div class="kicker">SECTION 06</div>
+            <h2>The Defibrillators vs The Room Silencers</h2>
+            <p class="slide-desc">Tracking conversational dynamics around 2+ hour graveyard silences.</p>
+        </div>
+        <div class="grid-3">
+            
+        <div class="card column-card">
+            <h3>🚒 The Defibrillators</h3>
+            <p class="col-note">Broke an awkward 2+ hour silence</p>
+            <ul><li><strong>Hannah Irvine</strong>: 105 times</li><li><strong>Abyan</strong>: 93 times</li><li><strong>Darren Kelly</strong>: 52 times</li><li><strong>Seán MacDiarmada</strong>: 40 times</li></ul>
+        </div>
+        
+            
+        <div class="card column-card">
+            <h3>💀 The Room Silencers</h3>
+            <p class="col-note">Sent the message before the chat died</p>
+            <ul><li><strong>Hannah Irvine</strong>: 109 times</li><li><strong>Abyan</strong>: 83 times</li><li><strong>Darren Kelly</strong>: 54 times</li><li><strong>Darius Rezania</strong>: 44 times</li></ul>
+        </div>
+        
+            
+        <div class="card column-card">
+            <h3>🕳️ Left in The Void</h3>
+            <p class="col-note">0 reactions followed by >2h silence</p>
+            <ul><li><strong>Hannah Irvine</strong>: 43 times</li><li><strong>Abyan</strong>: 33 times</li><li><strong>ᴅᴀɴɪᴇʟ ᴄᴀɪʀɴᴇʏ</strong>: 28 times</li><li><strong>Darren Kelly</strong>: 26 times</li></ul>
+        </div>
+        
+        </div>
+        <div class="speaker-card">
+            🗣️ <strong>Speaker Note:</strong> "Hannah broke the silence 105 times, but also caused the silence 109 times. Abyan is #2 in both categories—they are the dual engines of life and death in this chat."
+        </div>
+    </div>
+    </section>
+<section class="slide" data-slide="7">
+    <div class="slide-content">
+        <div class="slide-header">
+            <div class="kicker">SECTION 07</div>
+            <h2>The Media Vault &amp; Reel Junkies</h2>
+            <p class="slide-desc">Who sends the photos, who bombards the group with Instagram Reels?</p>
+        </div>
+        <div class="grid-2">
+            <div class="card media-box">
+                <h3>📸 The Paparazzi (Photos Sent)</h3>
+                <p class="subtext">529 total photos dropped in chat history</p>
+                <ul><li><strong>Hannah Irvine</strong>: 136 photos</li><li><strong>Seán MacDiarmada</strong>: 55 photos</li><li><strong>Ben Richardson</strong>: 52 photos</li><li><strong>Darius Rezania</strong>: 49 photos</li></ul>
+            </div>
+            <div class="card media-box highlight-box">
+                <h3>📲 The Reel Addicts (Shared Posts)</h3>
+                <p class="subtext">504 shared Instagram posts/reels forwarded</p>
+                <ul><li><strong>Hannah Irvine</strong>: 206 shared reels</li><li><strong>Abyan</strong>: 74 shared reels</li><li><strong>Darren Kelly</strong>: 59 shared reels</li><li><strong>Seán MacDiarmada</strong>: 45 shared reels</li></ul>
+            </div>
+        </div>
+        <div class="callout-card">
+            🎙️ <strong>The Voice Note Fact:</strong> Exactly <strong>TWO voice notes</strong> were sent in 10 months across 18,061 messages. One by Hannah, one by Ben. Nobody wants to hear our voices.
+        </div>
+        <div class="speaker-card">
+            🗣️ <strong>Speaker Note:</strong> "Hannah sent 206 reels—literally 41% of every reel in this chat came from Hannah. Hannah and Ben also share the solitary voice note record."
+        </div>
+    </div>
+    </section>
+<section class="slide" data-slide="8">
+    <div class="slide-content">
+        <div class="slide-header">
+            <div class="kicker">SECTION 08</div>
+            <h2>The Crickets Award: Poured Their Soul Out</h2>
+            <p class="slide-desc">The longest essays and manifestos that received literally ZERO reactions.</p>
+        </div>
+        <div class="cricket-container">
+            
+        <div class="card cricket-card">
+            <div class="cricket-header">
+                <strong>#1 Ben Richardson</strong>
+                <span class="badge rx-zero">0 Reactions • 173 Words (944 chars)</span>
+            </div>
+            <p class="cricket-quote">“It’s true “tall brunette your so pretty” “Bess boy in quarter zip I’ll make out with you after lecture “ NO STOP STOP STOP. IN A CROWDED LECTURE HALL WITH 200 PEOPLE I SIT THERE AND HOPE YOU WALK THROUGH THE DOOR EVERY C...”</p>
+            <div class="cricket-date">2026-09-30 13:52 • Result: Total Dead Silence 🦗</div>
+        </div>
+        
+        <div class="card cricket-card">
+            <div class="cricket-header">
+                <strong>#2 ᴅᴀɴɪᴇʟ ᴄᴀɪʀɴᴇʏ</strong>
+                <span class="badge rx-zero">0 Reactions • 96 Words (489 chars)</span>
+            </div>
+            <p class="cricket-quote">“Normally with wodden floors im a big fan of a dark grey, just makes the woods pop. But that needs most things in the room to be bright. Which atm they dont look to be. Id acc be weary of either colour as its clashes quit...”</p>
+            <div class="cricket-date">2026-08-28 14:41 • Result: Total Dead Silence 🦗</div>
+        </div>
+        
+        <div class="card cricket-card">
+            <div class="cricket-header">
+                <strong>#3 Ben Richardson</strong>
+                <span class="badge rx-zero">0 Reactions • 80 Words (444 chars)</span>
+            </div>
+            <p class="cricket-quote">“I wanna hear someone say that just one conversation with someone changed their lives fundamentally. I wanna hear that someone as thought of someone every day since the moment they met them. That YEARS have passed they st...”</p>
+            <div class="cricket-date">2026-09-30 13:56 • Result: Total Dead Silence 🦗</div>
+        </div>
+        
+        </div>
+        <div class="speaker-card">
+            🗣️ <strong>Speaker Note:</strong> "Ben wrote a 944-character essay about brunettes in lecture halls and got absolute crickets. Daniel dropped an interior design thesis on dark grey wooden floors—zero reactions."
+        </div>
+    </div>
+    </section>
+<section class="slide" data-slide="9">
+    <div class="slide-content">
+        <div class="slide-header">
+            <div class="kicker">SECTION 09</div>
+            <h2>Crowning One-Liners: The Comedy Snipers</h2>
+            <p class="slide-desc">Standalone bangers dropped out of nowhere with zero surrounding liked messages.</p>
+        </div>
+        <div class="grid-2">
+            
+        <div class="card sniper-card">
+            <div class="sniper-top">
+                <span class="badge rx-badge">#1 ★ 8 Reactions</span>
+                <span class="sniper-date">2026-02-12 17:12</span>
+            </div>
+            <p class="sniper-text">“hey guys i would like to invite you (yes you) to swords on the 21st of February to celebrate my 21st birthday in my abode (mandato...”</p>
+            <div class="sniper-footer">
+                <strong>Seán MacDiarmada</strong>
+                <span>❤ ❤ ❤ ❤ ❤ ❤ ❤ ❤</span>
+            </div>
+        </div>
+        
+        <div class="card sniper-card">
+            <div class="sniper-top">
+                <span class="badge rx-badge">#2 ★ 7 Reactions</span>
+                <span class="sniper-date">2026-02-13 11:27</span>
+            </div>
+            <p class="sniper-text">“Who wants to go?”</p>
+            <div class="sniper-footer">
+                <strong>Sophia</strong>
+                <span>❤ ❤ ❤ ❤ ❤ ❤ ❤</span>
+            </div>
+        </div>
+        
+        <div class="card sniper-card">
+            <div class="sniper-top">
+                <span class="badge rx-badge">#3 ★ 7 Reactions</span>
+                <span class="sniper-date">2026-10-16 13:34</span>
+            </div>
+            <p class="sniper-text">“Can I do my capstone on Hollywood handshakes”</p>
+            <div class="sniper-footer">
+                <strong>Seán Corry</strong>
+                <span>❤ ❤ ❤ ❤ ❤ ❤ ❤</span>
+            </div>
+        </div>
+        
+        <div class="card sniper-card">
+            <div class="sniper-top">
+                <span class="badge rx-badge">#4 ★ 7 Reactions</span>
+                <span class="sniper-date">2026-11-01 18:55</span>
+            </div>
+            <p class="sniper-text">“I’m less nice than Daniel, mandatory attendance for all of you”</p>
+            <div class="sniper-footer">
+                <strong>Clodagh🌻</strong>
+                <span>❤ ❤ ❤ ❤ ❤ ❤ ❤</span>
+            </div>
+        </div>
+        
+        </div>
+        <div class="speaker-card">
+            🗣️ <strong>Speaker Note:</strong> "Seán M's 21st Swords party invite holds the #1 all-time record with 8 reactions. Sophia's 4-word message 'Who wants to go?' got 7 reactions—pure poetry."
+        </div>
+    </div>
+    </section>
+<section class="slide" data-slide="10">
+    <div class="slide-content">
+        <div class="slide-header">
+            <div class="kicker">SECTION 10</div>
+            <h2>Solo Flow State: Cooking in the Zone</h2>
+            <p class="slide-desc">When one person enters an unbroken manic comedy heater completely alone.</p>
+        </div>
+        <div class="card flow-showcase">
+            <div class="flow-meta">
+                <h3>👑 Joe's 30-Second Symphony</h3>
+                <span>July 15, 2026 • 20 Total Reactions in half a minute</span>
+            </div>
+            <div class="bubble-stack">
+                <div class="chat-bubble joe-bubble"><span class="rx-pill">4 rx</span> “i like the solid bar”</div><div class="chat-bubble joe-bubble"><span class="rx-pill">6 rx</span> “crunchy”</div><div class="chat-bubble joe-bubble"><span class="rx-pill">5 rx</span> “chewy”</div><div class="chat-bubble joe-bubble"><span class="rx-pill">5 rx</span> “etc.”</div>
+            </div>
+        </div>
+        <div class="speaker-card">
+            🗣️ <strong>Speaker Note:</strong> "Within 30 seconds, Joe fired off four messages in a row: 'i like the solid bar', 'crunchy', 'chewy', 'etc.' Every single one became a certified banger."
+        </div>
+    </div>
+    </section>
+<section class="slide" data-slide="11">
+    <div class="slide-content">
+        <div class="slide-header">
+            <div class="kicker">GROUP FLOW STATE • PART 1</div>
+            <h2>The Parliamentary Gooner Debate</h2>
+            <p class="slide-desc">October 20, 2026 • 4 Bangers in 6 Minutes (20 Total Reactions)</p>
+        </div>
+        <div class="chat-dialogue">
+            <div class="chat-row left">
+                <span class="avatar">Joe</span>
+                <div class="bubble"><span class="rx-tag">5 rx</span> “what's unethical about sucking your own dick”</div>
+            </div>
+            <div class="chat-row right">
+                <span class="avatar">ᴅᴀɴɪᴇʟ</span>
+                <div class="bubble"><span class="rx-tag">4 rx</span> “Whats unethical about trying to suck it yourself?”</div>
+            </div>
+            <div class="chat-row left">
+                <span class="avatar">Seán C</span>
+                <div class="bubble"><span class="rx-tag">5 rx</span> ““Mr speaker I am a gooner” ahh”</div>
+            </div>
+            <div class="chat-row right">
+                <span class="avatar">Hannah</span>
+                <div class="bubble"><span class="rx-tag">6 rx</span> “Of he can do this for himself imagine what h could do for me”</div>
+            </div>
+        </div>
+        <div class="speaker-card">
+            🗣️ <strong>Speaker Note:</strong> "An absolute masterclass in conversational improv. Four people, four distinct angles, unbroken comedic synchronization."
+        </div>
+    </div>
+    </section>
+<section class="slide" data-slide="12">
+    <div class="slide-content">
+        <div class="slide-header">
+            <div class="kicker">GROUP FLOW STATE • PART 2</div>
+            <h2>Temu Darren &amp; Two-Line Slander</h2>
+            <p class="slide-desc">Rapid-fire comedic execution across July &amp; October 2026.</p>
+        </div>
+        <div class="grid-2">
+            <div class="card riff-card">
+                <h3>Riff A: The Temu Incident</h3>
+                <div class="dialogue-mini">
+                    <div class="msg"><strong>Darren Kelly</strong> [4 rx]: “The goat???”</div>
+                    <div class="msg reply"><strong>Sophia</strong> [4 rx]: “David Kenny aka temu Darren Kelly”</div>
+                </div>
+            </div>
+            <div class="card riff-card">
+                <h3>Riff B: Two-Line Acronym Slander</h3>
+                <div class="dialogue-mini">
+                    <div class="msg"><strong>Darren Kelly</strong> [5 rx]: “The s in smacks stands for si”</div>
+                    <div class="msg reply"><strong>Seán MacDiarmada</strong> [6 rx]: “the o in joe stands for obese”</div>
+                </div>
+            </div>
+        </div>
+        <div class="speaker-card">
+            🗣️ <strong>Speaker Note:</strong> "Sophia calling David Kenny 'Temu Darren Kelly' was unprovoked and devastating. And Seán's rebuttal on Joe's acronym was pure violence."
+        </div>
+    </div>
+    </section>
+<section class="slide" data-slide="13">
+    <div class="slide-content">
+        <div class="slide-header">
+            <div class="kicker">GROUP FLOW STATE • PART 3</div>
+            <h2>Fatherhood &amp; The Xenomorph</h2>
+            <p class="slide-desc">August 27, 2026 • From pure emotional warmth to immediate chaos in 60 seconds.</p>
+        </div>
+        <div class="chat-dialogue">
+            <div class="chat-row left">
+                <span class="avatar">Ben</span>
+                <div class="bubble wide"><span class="rx-tag">6 rx</span> “So beautiful and amazing and I would love to be a father and be blessed to have a lovely wife and child... cuddle in bed in the morning as a family...”</div>
+            </div>
+            <div class="chat-row left">
+                <span class="avatar">Ben</span>
+                <div class="bubble"><span class="rx-tag">5 rx</span> “Pffffff Alri ig”</div>
+            </div>
+            <div class="chat-row right">
+                <span class="avatar">Seán M</span>
+                <div class="bubble"><span class="rx-tag">5 rx</span> “"are you a xenomorph because I'd let you burst on my chest" - Darren”</div>
+            </div>
+        </div>
+        <div class="speaker-card">
+            🗣️ <strong>Speaker Note:</strong> "Ben wrote the most wholesome paragraph in chat history about loving a child, followed immediately by Seán quoting Darren's pickup lines about Xenomorphs."
+        </div>
+    </div>
+    </section>
+<section class="slide" data-slide="14">
+    <div class="slide-content">
+        <div class="slide-header">
+            <div class="kicker">SECTION 11</div>
+            <h2>Chemistry &amp; The Simp Matrix</h2>
+            <p class="slide-desc">Mutual power duos versus the biggest one-sided reaction deficits.</p>
+        </div>
+        <div class="grid-2">
+            <div class="card">
+                <h3>💞 Top Mutual Duos</h3>
+                <p class="subtext">Equal exchange of love and hype</p>
+                <ul class="styled-list"><li><strong>Hannah Irvine &amp; Joe</strong>: 500 mutual reactions</li><li><strong>Hannah Irvine &amp; Seán MacDiarmada</strong>: 395 mutual reactions</li><li><strong>Darren Kelly &amp; Hannah Irvine</strong>: 378 mutual reactions</li></ul>
+            </div>
+            <div class="card">
+                <h3>💔 The Simp Index (Unrequited Hype)</h3>
+                <p class="subtext">Highest reaction imbalances in the chat</p>
+                
+        <div class="simp-card">
+            <div class="simp-pair"><strong>ᴅᴀɴɪᴇʟ ᴄᴀɪʀɴᴇʏ</strong> ➔ <strong>Hannah Irvine</strong></div>
+            <div class="simp-detail">Gave 268 rx • Received only 95 rx back</div>
+            <div class="simp-diff">Net Deficit: -173 Reactions 💔</div>
+        </div>
+        
+        <div class="simp-card">
+            <div class="simp-pair"><strong>Hannah Irvine</strong> ➔ <strong>Seán MacDiarmada</strong></div>
+            <div class="simp-detail">Gave 274 rx • Received only 121 rx back</div>
+            <div class="simp-diff">Net Deficit: -153 Reactions 💔</div>
+        </div>
+        
+        <div class="simp-card">
+            <div class="simp-pair"><strong>Joe</strong> ➔ <strong>Seán MacDiarmada</strong></div>
+            <div class="simp-detail">Gave 190 rx • Received only 45 rx back</div>
+            <div class="simp-diff">Net Deficit: -145 Reactions 💔</div>
+        </div>
+        
+        <div class="simp-card">
+            <div class="simp-pair"><strong>Joe</strong> ➔ <strong>Abyan</strong></div>
+            <div class="simp-detail">Gave 171 rx • Received only 47 rx back</div>
+            <div class="simp-diff">Net Deficit: -124 Reactions 💔</div>
+        </div>
+        
+            </div>
+        </div>
+        <div class="speaker-card">
+            🗣️ <strong>Speaker Note:</strong> "Daniel gave Hannah 268 reactions and only got 95 back. Hannah gave Seán M 274 reactions and got 121 back. Joe gave Seán M 190 reactions and only got 45 back. The food chain is brutal."
+        </div>
+    </div>
+    </section>
+<section class="slide" data-slide="15">
+    <div class="slide-content">
+        <div class="slide-header">
+            <div class="kicker">SECTION 12</div>
+            <h2>The Narcissus Trophy: Self-Reactions</h2>
+            <p class="slide-desc">Caught in 4K reacting with emojis to their own sent messages.</p>
+        </div>
+        <div class="card narcissus-box">
+            <div class="trophy-icon">🪞</div>
+            <div class="podium-row">
+                <div class="podium-item"><span class="badge self-badge">9x</span> <strong>ᴅᴀɴɪᴇʟ ᴄᴀɪʀɴᴇʏ</strong></div><div class="podium-item"><span class="badge self-badge">9x</span> <strong>Seán MacDiarmada</strong></div><div class="podium-item"><span class="badge self-badge">6x</span> <strong>Abyan</strong></div><div class="podium-item"><span class="badge self-badge">4x</span> <strong>Hannah Irvine</strong></div><div class="podium-item"><span class="badge self-badge">1x</span> <strong>Sophia</strong></div>
+            </div>
+        </div>
+        <div class="speaker-card">
+            🗣️ <strong>Speaker Note:</strong> "Seán M and Daniel Cairney are tied at the top with 9 self-reactions each. Abyan was caught 6 times. Self-love is important, guys."
+        </div>
+    </div>
+    </section>
+<section class="slide" data-slide="16">
+    <div class="slide-content">
+        <div class="slide-header">
+            <div class="kicker">SECTION 13</div>
+            <h2>Circadian Rhythms: Sleep Schedules</h2>
+            <p class="slide-desc">Who texts at ungodly hours, and who is awake before the sun?</p>
+        </div>
+        <div class="grid-2">
+            <div class="card time-card owl-bg">
+                <h3>🦉 The 3 AM Goblins (Midnight – 5 AM)</h3>
+                <ul class="styled-list"><li><strong>Abyan</strong>: 74 msgs (7.2%)</li><li><strong>Joe</strong>: 67 msgs (6.5%)</li><li><strong>Aaron Flynn</strong>: 5 msgs (5.5%)</li><li><strong>Seán MacDiarmada</strong>: 94 msgs (5.2%)</li></ul>
+            </div>
+            <div class="card time-card bird-bg">
+                <h3>🌅 The Early Birds (6 AM – 10 AM)</h3>
+                <ul class="styled-list"><li><strong>ᴅᴀɴɪᴇʟ ᴄᴀɪʀɴᴇʏ</strong>: 87 msgs (10.2%)</li><li><strong>Ben Richardson</strong>: 113 msgs (7.7%)</li><li><strong>Darius Rezania</strong>: 118 msgs (7.5%)</li><li><strong>Aaron Flynn</strong>: 6 msgs (6.6%)</li></ul>
+            </div>
+        </div>
+        <div class="speaker-card">
+            🗣️ <strong>Speaker Note:</strong> "Abyan leads the vampire brigade with over 7% of all his messages sent between midnight and 5 AM. Daniel Cairney is our early morning pogchamp at 10.2% before 10 AM. Clodagh is comatose at 1.1%."
+        </div>
+    </div>
+    </section>
+<section class="slide" data-slide="17">
+    <div class="slide-content">
+        <div class="slide-header">
+            <div class="kicker">SECTION 14</div>
+            <h2>Signature Vocabulary: Linguistic Fingerprints</h2>
+            <p class="slide-desc">Cleaned distinctive words used disproportionately by each person.</p>
+        </div>
+        <div class="grid-2">
+            
+        <div class="card vocab-box">
+            <strong>Aaron Flynn</strong>
+            <p>pearse (3x) • able (3x) • dublin (3x) • glad (3x) • function (3x)</p>
+        </div>
+        
+        <div class="card vocab-box">
+            <strong>Abyan</strong>
+            <p>cuz (12x) • terms (5x) • thr (4x) • acai (4x) • hypergamy (4x)</p>
+        </div>
+        
+        <div class="card vocab-box">
+            <strong>Ben Richardson</strong>
+            <p>gunna (9x) • shoutout (10x) • spell (4x) • shoudl (4x) • chaperone (10x)</p>
+        </div>
+        
+        <div class="card vocab-box">
+            <strong>Clodagh🌻</strong>
+            <p>dun (11x) • rly (5x) • dosent (4x) • igees (4x) • poisoning (4x)</p>
+        </div>
+        
+        <div class="card vocab-box">
+            <strong>Darius Rezania</strong>
+            <p>cos (19x) • stops (4x) • sir (4x) • device (4x) • planes (4x)</p>
+        </div>
+        
+        <div class="card vocab-box">
+            <strong>Darren Kelly</strong>
+            <p>coz (15x) • gna (9x) • ibec (11x) • probz (5x) • climbing (26x)</p>
+        </div>
+        
+        <div class="card vocab-box">
+            <strong>Hannah Irvine</strong>
+            <p>sophs (31x) • smthn (19x) • rehearsal (18x) • tommorow (14x) • round (37x)</p>
+        </div>
+        
+        <div class="card vocab-box">
+            <strong>Joe</strong>
+            <p>pulling (5x) • toastie (6x) • munster (4x) • kobe (3x) • mayo (8x)</p>
+        </div>
+        
+        </div>
+        <div class="speaker-card">
+            🗣️ <strong>Speaker Note:</strong> "Daniel said poggers 16 times and invented 'dargin' and 'yargin'. Joe talks about toasties and pulling. Abyan dropped 'hypergamy'. Darren's life revolves around climbing and IBEC."
+        </div>
+    </div>
+    </section>
+<section class="slide" data-slide="18">
+    <div class="slide-content">
+        <div class="slide-header">
+            <div class="kicker">SECTION 15</div>
+            <h2>Emoji Connoisseurs &amp; Wild Reactions</h2>
+            <p class="slide-desc">Over 155 distinct emojis were used as reactions in this chat.</p>
+        </div>
+        <div class="grid-2">
+            <div class="card">
+                <h3>👑 The Standard Emoji Hierarchy</h3>
+                <div class="emoji-stat">❤ Heart: <strong>6,627x</strong></div>
+                <div class="emoji-stat">🔥 Fire: <strong>112x</strong></div>
+                <div class="emoji-stat">😂 Laugh: <strong>93x</strong></div>
+                <div class="emoji-stat">😢 Cry: <strong>86x</strong></div>
+            </div>
+            <div class="card highlight-box">
+                <h3>🧌 The Unhinged Emoji Collection</h3>
+                <div class="emoji-stat">🐐 Goat: <strong>61x</strong></div>
+                <div class="emoji-stat">🇮🇱 Flag: <strong>78x</strong></div>
+                <div class="emoji-stat">🗜️ Metal Clamp: <strong>6x</strong></div>
+                <div class="emoji-stat">🧼 Bar of Soap: <strong>4x</strong></div>
+                <div class="emoji-stat">⚰️ Coffin: <strong>2x</strong></div>
+                <div class="emoji-stat">🔪 Kitchen Knife: <strong>2x</strong></div>
+            </div>
+        </div>
+        <div class="speaker-card">
+            🗣️ <strong>Speaker Note:</strong> "Hannah used 55 different reaction emojis, Seán M used 51. Someone in this group reacted with a metal clamp 6 times and soap 4 times."
+        </div>
+    </div>
+    </section>
+<section class="slide" data-slide="19">
+    <div class="slide-content">
+        <div class="slide-header">
+            <div class="kicker">SECTION 16 • PART 1</div>
+            <h2>Magnum Opus: Crowning Achievements</h2>
+            <p class="slide-desc">Every member's single highest-rated message in group chat history.</p>
+        </div>
+        <div class="grid-2">
+            
+        <div class="card opus-slide-card">
+            <div class="opus-top">
+                <strong>Seán MacDiarmada</strong>
+                <span class="badge rx-badge">8 Reactions</span>
+            </div>
+            <p class="opus-quote">“hey guys i would like to invite you (yes you) to swords on the 21st of February to celebrate my 21st birthday ...”</p>
+            <div class="opus-meta">2026-02-12 17:12 • ❤ ❤ ❤ ❤ ❤ ❤ ❤ ❤</div>
+        </div>
+        
+        <div class="card opus-slide-card">
+            <div class="opus-top">
+                <strong>Sophia</strong>
+                <span class="badge rx-badge">7 Reactions</span>
+            </div>
+            <p class="opus-quote">“Who wants to go?”</p>
+            <div class="opus-meta">2026-02-13 11:27 • ❤ ❤ ❤ ❤ ❤ ❤ ❤</div>
+        </div>
+        
+        <div class="card opus-slide-card">
+            <div class="opus-top">
+                <strong>Clodagh🌻</strong>
+                <span class="badge rx-badge">7 Reactions</span>
+            </div>
+            <p class="opus-quote">“I’m less nice than Daniel, mandatory attendance for all of you”</p>
+            <div class="opus-meta">2026-11-01 18:55 • ❤ ❤ ❤ ❤ ❤ ❤ ❤</div>
+        </div>
+        
+        <div class="card opus-slide-card">
+            <div class="opus-top">
+                <strong>Seán Corry</strong>
+                <span class="badge rx-badge">7 Reactions</span>
+            </div>
+            <p class="opus-quote">“Can I do my capstone on Hollywood handshakes”</p>
+            <div class="opus-meta">2026-10-16 13:34 • ❤ ❤ ❤ ❤ ❤ ❤ ❤</div>
+        </div>
+        
+        <div class="card opus-slide-card">
+            <div class="opus-top">
+                <strong>Hannah Irvine</strong>
+                <span class="badge rx-badge">6 Reactions</span>
+            </div>
+            <p class="opus-quote">“#justbenthings”</p>
+            <div class="opus-meta">2026-07-08 15:30 • ❤ ❤ ❤ ❤ ❤ ❤</div>
+        </div>
+        
+        <div class="card opus-slide-card">
+            <div class="opus-top">
+                <strong>Darren Kelly</strong>
+                <span class="badge rx-badge">6 Reactions</span>
+            </div>
+            <p class="opus-quote">“Darren Kelly is interning this summer”</p>
+            <div class="opus-meta">2026-05-18 22:51 • ❤ 🔥 ❤ ❤ ❤ ❤</div>
+        </div>
+        
+        </div>
+    </div>
+    </section>
+<section class="slide" data-slide="20">
+    <div class="slide-content">
+        <div class="slide-header">
+            <div class="kicker">SECTION 16 • PART 2</div>
+            <h2>Magnum Opus: Crowning Achievements</h2>
+            <p class="slide-desc">Every member's single highest-rated message in group chat history.</p>
+        </div>
+        <div class="grid-2">
+            
+        <div class="card opus-slide-card">
+            <div class="opus-top">
+                <strong>Abyan</strong>
+                <span class="badge rx-badge">6 Reactions</span>
+            </div>
+            <p class="opus-quote">“Yesterday in Bank Indonesia: The IMF visited and gave me a Malaysian themed frige magnet”</p>
+            <div class="opus-meta">2026-07-17 06:14 • 🔥 ❤ ❤ ❤ ❤ ❤</div>
+        </div>
+        
+        <div class="card opus-slide-card">
+            <div class="opus-top">
+                <strong>Darius Rezania</strong>
+                <span class="badge rx-badge">6 Reactions</span>
+            </div>
+            <p class="opus-quote">“Thank yous for coming yesterday hope yous all enjoyed it like I did, and I&#x27;ll see yous all again soon for poke...”</p>
+            <div class="opus-meta">2026-03-24 09:28 • ❤ ❤ ❤ ❤ ❤ ❤</div>
+        </div>
+        
+        <div class="card opus-slide-card">
+            <div class="opus-top">
+                <strong>Joe</strong>
+                <span class="badge rx-badge">6 Reactions</span>
+            </div>
+            <p class="opus-quote">“i will 1 v 1 rootbeer in crossclimb”</p>
+            <div class="opus-meta">2026-04-06 12:50 • ❤ ❤ 🔥 ❤ 🐐 ❤</div>
+        </div>
+        
+        <div class="card opus-slide-card">
+            <div class="opus-top">
+                <strong>Ben Richardson</strong>
+                <span class="badge rx-badge">6 Reactions</span>
+            </div>
+            <p class="opus-quote">“So beautiful and amazing and I would love to be a father and be blessed to have a lovely wife and child. Like ...”</p>
+            <div class="opus-meta">2026-08-27 17:28 • ❤ ❤ ❤ ❤ ❤ ❤</div>
+        </div>
+        
+        <div class="card opus-slide-card">
+            <div class="opus-top">
+                <strong>ᴅᴀɴɪᴇʟ ᴄᴀɪʀɴᴇʏ</strong>
+                <span class="badge rx-badge">5 Reactions</span>
+            </div>
+            <p class="opus-quote">“Legendary”</p>
+            <div class="opus-meta">2026-10-07 17:43 • ❤ ❤ ❤ ❤ ❤</div>
+        </div>
+        
+        <div class="card opus-slide-card">
+            <div class="opus-top">
+                <strong>Aaron Flynn</strong>
+                <span class="badge rx-badge">5 Reactions</span>
+            </div>
+            <p class="opus-quote">“hello all, i will be leaving ireland on the 18th; might a function on the 16th be the move 🤔”</p>
+            <div class="opus-meta">2026-08-03 14:47 • ❤ ❤ ❤ ❤ ❤</div>
+        </div>
+        
+        <div class="card opus-slide-card">
+            <div class="opus-top">
+                <strong>Pauric Mc Bride</strong>
+                <span class="badge rx-badge">3 Reactions</span>
+            </div>
+            <p class="opus-quote">“Everyone who didn’t get a t ball ticket”</p>
+            <div class="opus-meta">2026-02-18 10:25 • 🖤 ❤ ❤</div>
+        </div>
+        
+        </div>
+        <div class="speaker-card">
+            🗣️ <strong>Speaker Note:</strong> "Abyan's crowning achievement was getting an IMF Malaysian fridge magnet. Joe's was challenging Rootbeer to 1v1 crossclimb. Everyone had their moment."
+        </div>
+    </div>
+    </section>
+<section class="slide" data-slide="21">
+    <div class="slide-content">
+        <div class="slide-header">
+            <div class="kicker">SECTION 17 • PART 1</div>
+            <h2>The Official Superlatives Ceremony</h2>
+            <p class="slide-desc">Data-backed accolades awarded to each participant.</p>
+        </div>
+        <div class="grid-3">
+            
+        <div class="card award-slide-card">
+            <div class="award-trophy">🏆 The Standup Headliner</div>
+            <div class="award-recipient">Seán MacDiarmada</div>
+            <p class="award-desc">Highest comedy volume in chat history (59 bangers with 4+ reactions) &amp; All-time record 8 reactions!</p>
+        </div>
+        
+        <div class="card award-slide-card">
+            <div class="award-trophy">⚡ Supersonic Speed Demon</div>
+            <div class="award-recipient">Abyan</div>
+            <p class="award-desc">Fastest median response time in the chat (14.4 seconds) — never lets a message hang!</p>
+        </div>
+        
+        <div class="card award-slide-card">
+            <div class="award-trophy">🦉 The 3 AM Goblin</div>
+            <div class="award-recipient">Abyan</div>
+            <p class="award-desc">Highest proportion of ungodly late-night texting (7.2% sent between midnight and 5:00 AM)</p>
+        </div>
+        
+        <div class="card award-slide-card">
+            <div class="award-trophy">👑 The Activity Sovereign</div>
+            <div class="award-recipient">Hannah Irvine</div>
+            <p class="award-desc">Absolute bedrock of the chat: 3,913 messages, 2,390 replies, 1,691 reactions given, and 206 reels shared!</p>
+        </div>
+        
+        <div class="card award-slide-card">
+            <div class="award-trophy">😂 The Laughing Gas Award</div>
+            <div class="award-recipient">Darren Kelly</div>
+            <p class="award-desc">Group chat giggler #1: sent 130 messages laughing (6.1% of all messages sent)</p>
+        </div>
+        
+        <div class="card award-slide-card">
+            <div class="award-trophy">🎯 The Ruthless Minimalist</div>
+            <div class="award-recipient">Sophia</div>
+            <p class="award-desc">Absolute master of brevity: hit 7 reactions with just 4 words (&#x27;Who wants to go?&#x27;), #2 fastest responder (16.1s)</p>
+        </div>
+        
+        <div class="card award-slide-card">
+            <div class="award-trophy">🔥 The Flow State Virtuoso</div>
+            <div class="award-recipient">Joe</div>
+            <p class="award-desc">Produced the greatest solo comedy heater in chat history (&#x27;i like the solid bar&#x27; -&gt; &#x27;crunchy&#x27; -&gt; &#x27;chewy&#x27; -&gt; &#x27;etc.&#x27;)</p>
+        </div>
+        
+        </div>
+    </div>
+    </section>
+<section class="slide" data-slide="22">
+    <div class="slide-content">
+        <div class="slide-header">
+            <div class="kicker">SECTION 17 • PART 2</div>
+            <h2>The Official Superlatives Ceremony</h2>
+            <p class="slide-desc">Data-backed accolades awarded to each participant.</p>
+        </div>
+        <div class="grid-3">
+            
+        <div class="card award-slide-card">
+            <div class="award-trophy">📜 The Shakespeare Copypasta King</div>
+            <div class="award-recipient">Ben Richardson</div>
+            <p class="award-desc">Authored the longest single message (944 characters) &amp; held the chat hostage with 14 consecutive messages in a row!</p>
+        </div>
+        
+        <div class="card award-slide-card">
+            <div class="award-trophy">⚔️ The Feared Enforcer</div>
+            <div class="award-recipient">Clodagh🌻</div>
+            <p class="award-desc">Mandatory attendance enforcer with an elite 34.1% reaction hit rate and 7-reaction landmark banger!</p>
+        </div>
+        
+        <div class="card award-slide-card">
+            <div class="award-trophy">🎩 The Formal Diplomat</div>
+            <div class="award-recipient">Seán Corry</div>
+            <p class="award-desc">Official author of the &#x27;FORMAL NOTICE OF RE-ENTRY&#x27; and Hollywood Handshakes capstone with a 36.0% reaction hit rate!</p>
+        </div>
+        
+        <div class="card award-slide-card">
+            <div class="award-trophy">🌅 The Early Morning Pogchamp</div>
+            <div class="award-recipient">ᴅᴀɴɪᴇʟ ᴄᴀɪʀɴᴇʏ</div>
+            <p class="award-desc">#1 early bird (10.2% sent 6-10 AM) and single-handedly kept &#x27;poggers&#x27; alive with 16 invocations!</p>
+        </div>
+        
+        <div class="card award-slide-card">
+            <div class="award-trophy">🙏 The Gracious Host</div>
+            <div class="award-recipient">Darius Rezania</div>
+            <p class="award-desc">Held court with heartfelt post-event thank-you speeches (6 reactions) and 12-message monologues!</p>
+        </div>
+        
+        <div class="card award-slide-card">
+            <div class="award-trophy">📈 The Precision Investor</div>
+            <div class="award-recipient">Aaron Flynn</div>
+            <p class="award-desc">Highest reaction hit rate in the chat: 42.9% of his messages receive reactions! Zero wasted words.</p>
+        </div>
+        
+        <div class="card award-slide-card">
+            <div class="award-trophy">🤝 The Generous Philanthropist</div>
+            <div class="award-recipient">Pauric Mc Bride</div>
+            <p class="award-desc">Gives 1.06 reactions for every message he sends — purely here to support the squad!</p>
+        </div>
+        
+        </div>
+    </div>
+    </section>
+<section class="slide" data-slide="23">
+    <div class="slide-content finale-slide">
+        <div class="kicker">THAT'S A WRAP • 2026</div>
+        <h1 class="main-title">Thank You, Lemmings &amp; Gooners.</h1>
+        <p class="subtitle">Here's to another 18,000 unhinged messages.</p>
+        <div class="meta-tag-strip">
+            <span class="tag">Dossier Complete</span>
+            <span class="tag">Safe &amp; Sound</span>
+            <span class="tag">#eattheSU</span>
+        </div>
+        <button class="restart-btn" onclick="goToSlide(0)">↺ Replay Presentation</button>
+    </div>
+    </section>
+
+</div>
+
+<div class="deck-controls">
+    <button class="ctrl-btn" onclick="prevSlide()" title="Previous (Left Arrow)">◀</button>
+    <span class="slide-counter" id="slideCounter">1 / 24</span>
+    <button class="ctrl-btn" onclick="nextSlide()" title="Next (Right Arrow / Space)">▶</button>
+    <button class="ctrl-btn" onclick="toggleFullScreen()" title="Toggle Fullscreen (F)">⛶</button>
+</div>
+
+<script>
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+    let currentIndex = 0;
+
+    function showSlide(index) {
+        if (index < 0) index = 0;
+        if (index >= totalSlides) index = totalSlides - 1;
+        currentIndex = index;
+
+        slides.forEach((s, idx) => {
+            if (idx === currentIndex) {
+                s.classList.add('active');
+            } else {
+                s.classList.remove('active');
+            }
+        });
+
+        document.getElementById('slideCounter').innerText = `${currentIndex + 1} / ${totalSlides}`;
+        document.getElementById('progressBar').style.width = `${((currentIndex + 1) / totalSlides) * 100}%`;
+    }
+
+    function nextSlide() {
+        showSlide(currentIndex + 1);
+    }
+
+    function prevSlide() {
+        showSlide(currentIndex - 1);
+    }
+
+    function goToSlide(index) {
+        showSlide(index);
+    }
+
+    function toggleFullScreen() {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen().catch(() => {});
+        } else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            }
+        }
+    }
+
+    window.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown' || e.key === 'Enter') {
+            e.preventDefault();
+            nextSlide();
+        } else if (e.key === 'ArrowLeft' || e.key === 'PageUp' || e.key === 'Backspace') {
+            e.preventDefault();
+            prevSlide();
+        } else if (e.key === 'f' || e.key === 'F') {
+            toggleFullScreen();
+        } else if (e.key === 'Home') {
+            showSlide(0);
+        } else if (e.key === 'End') {
+            showSlide(totalSlides - 1);
+        }
+    });
+
+    // Initialize
+    showSlide(0);
+</script>
+</body>
+</html>
